@@ -5,7 +5,7 @@ Entry point for the Mood Machine rule based mood analyzer.
 from typing import List
 
 from mood_analyzer import MoodAnalyzer
-from dataset import SAMPLE_POSTS, TRUE_LABELS
+from dataset import LABELED_POSTS
 
 
 def evaluate_rule_based(posts: List[str], labels: List[str]) -> float:
@@ -50,7 +50,7 @@ def run_batch_demo() -> None:
     """
     analyzer = MoodAnalyzer()
     print("\n=== Batch Demo on SAMPLE_POSTS (rule based) ===")
-    for text in SAMPLE_POSTS:
+    for text, _ in LABELED_POSTS:
         label = analyzer.predict_label(text)
         # If explain() is implemented, show a short explanation.
         # reason = analyzer.explain(text)
@@ -83,7 +83,8 @@ def run_interactive_loop() -> None:
 
 
 if __name__ == "__main__":
-    evaluate_rule_based(SAMPLE_POSTS, TRUE_LABELS)
+    posts, labels = zip(*LABELED_POSTS)
+    evaluate_rule_based(list(posts), list(labels))
 
     run_batch_demo()
 
@@ -91,4 +92,4 @@ if __name__ == "__main__":
 
     print("\nTip: After you explore the rule based model here,")
     print("run `python ml_experiments.py` to try a simple ML based model")
-    print("trained on the same SAMPLE_POSTS and TRUE_LABELS.")
+    print("trained on the same LABELED_POSTS.")

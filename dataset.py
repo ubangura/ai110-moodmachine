@@ -2,17 +2,16 @@
 Shared data for the Mood Machine lab.
 
 This file defines:
-  - POSITIVE_WORDS: starter list of positive words
-  - NEGATIVE_WORDS: starter list of negative words
-  - SAMPLE_POSTS: short example posts for evaluation and training
-  - TRUE_LABELS: human labels for each post in SAMPLE_POSTS
+  - POSITIVE_WORDS: starter set of positive words
+  - NEGATIVE_WORDS: starter set of negative words
+  - LABELED_POSTS: list of (post, true_label) tuples for evaluation and training
 """
 
 # ---------------------------------------------------------------------
 # Starter word lists
 # ---------------------------------------------------------------------
 
-POSITIVE_WORDS = [
+POSITIVE_WORDS = {
     "happy",
     "great",
     "good",
@@ -23,9 +22,9 @@ POSITIVE_WORDS = [
     "chill",
     "relaxed",
     "amazing",
-]
+}
 
-NEGATIVE_WORDS = [
+NEGATIVE_WORDS = {
     "sad",
     "bad",
     "terrible",
@@ -36,43 +35,35 @@ NEGATIVE_WORDS = [
     "stressed",
     "hate",
     "boring",
-]
+}
 
 # ---------------------------------------------------------------------
 # Starter labeled dataset
 # ---------------------------------------------------------------------
 
-# Short example posts written as if they were social media updates or messages.
-SAMPLE_POSTS = [
-    "I love this class so much",
-    "Today was a terrible day",
-    "Feeling tired but kind of hopeful",
-    "This is fine",
-    "So excited for the weekend",
-    "I am not happy about this",
-]
-
-# Human labels for each post above.
+# Each entry is a (post, true_label) tuple.
 # Allowed labels in the starter:
 #   - "positive"
 #   - "negative"
 #   - "neutral"
 #   - "mixed"
-TRUE_LABELS = [
-    "positive",  # "I love this class so much"
-    "negative",  # "Today was a terrible day"
-    "mixed",     # "Feeling tired but kind of hopeful"
-    "neutral",   # "This is fine"
-    "positive",  # "So excited for the weekend"
-    "negative",  # "I am not happy about this"
+LABELED_POSTS = [
+    ("I love this class so much",                       "positive"),
+    ("Today was a terrible day",                        "negative"),
+    ("Feeling tired but kind of hopeful",               "mixed"),
+    ("This is fine",                                    "neutral"),
+    ("So excited for the weekend",                      "positive"),
+    ("I am not happy about this",                       "negative"),
+    ("Lowkey stressed but kind of proud of myself",     "mixed"),
+    ("This is so boring 😒",                            "negative"),
+    ("I can't believe how much I hate this",            "negative"),
+    ("I absolutely love getting stuck in traffic 😂",   "positive"),
 ]
 
 # TODO: Add 5-10 more posts and labels.
 #
 # Requirements:
-#   - For every new post you add to SAMPLE_POSTS, you must add one
-#     matching label to TRUE_LABELS.
-#   - SAMPLE_POSTS and TRUE_LABELS must always have the same length.
+#   - Each entry must be a (post, true_label) tuple.
 #   - Include a variety of language styles, such as:
 #       * Slang ("lowkey", "highkey", "no cap")
 #       * Emojis (":)", ":(", "🥲", "😂", "💀")
@@ -85,10 +76,6 @@ TRUE_LABELS = [
 #     Those "edge cases" are interesting to inspect for both the rule based
 #     and ML models.
 #
-# Example of how you might extend the lists:
+# Example of how you might extend the list:
 #
-# SAMPLE_POSTS.append("Lowkey stressed but kind of proud of myself")
-# TRUE_LABELS.append("mixed")
-#
-# Remember to keep them aligned:
-#   len(SAMPLE_POSTS) == len(TRUE_LABELS)
+# LABELED_POSTS.append(("Lowkey stressed but kind of proud of myself", "mixed"))

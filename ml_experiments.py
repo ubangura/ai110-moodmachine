@@ -13,7 +13,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 
-from dataset import SAMPLE_POSTS, TRUE_LABELS
+from dataset import LABELED_POSTS
 
 
 def train_ml_model(
@@ -122,14 +122,16 @@ def run_interactive_loop(
 
 
 if __name__ == "__main__":
-    print("Training an ML model on SAMPLE_POSTS and TRUE_LABELS from dataset.py...")
+    print("Training an ML model on LABELED_POSTS from dataset.py...")
     print("Make sure you have added enough labeled examples before running this.\n")
 
+    posts, labels = zip(*LABELED_POSTS)
+
     # Train the model on the current dataset.
-    vectorizer, model = train_ml_model(SAMPLE_POSTS, TRUE_LABELS)
+    vectorizer, model = train_ml_model(list(posts), list(labels))
 
     # Evaluate on the same dataset (training accuracy).
-    evaluate_on_dataset(SAMPLE_POSTS, TRUE_LABELS, vectorizer, model)
+    evaluate_on_dataset(list(posts), list(labels), vectorizer, model)
 
     # Let the user try their own examples.
     run_interactive_loop(vectorizer, model)
