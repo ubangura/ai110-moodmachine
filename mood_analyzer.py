@@ -10,8 +10,9 @@ This class starts with very simple logic:
 """
 
 from typing import List, Dict, Tuple, Optional
+import string
 
-from dataset import POSITIVE_WORDS, NEGATIVE_WORDS
+from dataset import POSITIVE_WORDS, NEGATIVE_WORDS, MoodLabel
 
 
 class MoodAnalyzer:
@@ -54,6 +55,11 @@ class MoodAnalyzer:
         """
         cleaned = text.strip().lower()
         tokens = cleaned.split()
+        print(f"Preprocessed '{text}' to {tokens}")
+
+        # TODO: Implement improvements here.
+
+        tokens = [''.join(c for c in token if c not in string.punctuation) for token in tokens]
 
         return tokens
 
@@ -89,27 +95,27 @@ class MoodAnalyzer:
     # Label prediction
     # ---------------------------------------------------------------------
 
-    def predict_label(self, text: str) -> str:
+    def predict_label(self, text: str) -> MoodLabel:
         """
         Turn the numeric score for a piece of text into a mood label.
 
         The default mapping is:
-          - score > 0  -> "positive"
-          - score < 0  -> "negative"
-          - score == 0 -> "neutral"
+          - score > 0  -> MoodLabel.POSITIVE
+          - score < 0  -> MoodLabel.NEGATIVE
+          - score == 0 -> MoodLabel.NEUTRAL
 
         TODO: You can adjust this mapping if it makes sense for your model.
         For example:
-          - Use different thresholds (for example score >= 2 to be "positive")
-          - Add a "mixed" label for scores close to zero
+          - Use different thresholds (for example score >= 2 to be POSITIVE)
+          - Add MoodLabel.MIXED for scores close to zero
         Just remember that whatever labels you return should match the labels
-        you use in TRUE_LABELS in dataset.py if you care about accuracy.
+        you use in LABELED_POSTS in dataset.py if you care about accuracy.
         """
         # TODO: Implement this method.
         #   1. Call self.score_text(text) to get the numeric score.
-        #   2. Return "positive" if the score is above 0.
-        #   3. Return "negative" if the score is below 0.
-        #   4. Return "neutral" otherwise.
+        #   2. Return MoodLabel.POSITIVE if the score is above 0.
+        #   3. Return MoodLabel.NEGATIVE if the score is below 0.
+        #   4. Return MoodLabel.NEUTRAL otherwise.
         pass
 
     # ---------------------------------------------------------------------
@@ -151,3 +157,8 @@ class MoodAnalyzer:
             f"(positive: {positive_hits or '[]'}, "
             f"negative: {negative_hits or '[]'})"
         )
+
+
+if __name__ == "__main__":
+    analyzer = MoodAnalyzer()
+    analyzer.preprocess("I love this class so much")

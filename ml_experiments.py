@@ -13,12 +13,12 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 
-from dataset import LABELED_POSTS
+from dataset import LABELED_POSTS, MoodLabel
 
 
 def train_ml_model(
     texts: List[str],
-    labels: List[str],
+    labels: List[MoodLabel],
 ) -> Tuple[CountVectorizer, LogisticRegression]:
     """
     Train a simple text classifier using bag of words features
@@ -51,7 +51,7 @@ def train_ml_model(
 
 def evaluate_on_dataset(
     texts: List[str],
-    labels: List[str],
+    labels: List[MoodLabel],
     vectorizer: CountVectorizer,
     model: LogisticRegression,
 ) -> float:

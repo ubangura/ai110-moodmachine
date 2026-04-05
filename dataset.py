@@ -2,10 +2,22 @@
 Shared data for the Mood Machine lab.
 
 This file defines:
+  - MoodLabel: enum of allowed mood labels
   - POSITIVE_WORDS: starter set of positive words
   - NEGATIVE_WORDS: starter set of negative words
-  - LABELED_POSTS: list of (post, true_label) tuples for evaluation and training
+  - LABELED_POSTS: list of (post, MoodLabel) tuples for evaluation and training
 """
+
+from enum import Enum
+
+
+class MoodLabel(str, Enum):
+    """Allowed mood labels for the Mood Machine."""
+    POSITIVE = "positive"
+    NEGATIVE = "negative"
+    NEUTRAL  = "neutral"
+    MIXED    = "mixed"
+
 
 # ---------------------------------------------------------------------
 # Starter word lists
@@ -41,29 +53,24 @@ NEGATIVE_WORDS = {
 # Starter labeled dataset
 # ---------------------------------------------------------------------
 
-# Each entry is a (post, true_label) tuple.
-# Allowed labels in the starter:
-#   - "positive"
-#   - "negative"
-#   - "neutral"
-#   - "mixed"
+# Each entry is a (post, MoodLabel) tuple.
 LABELED_POSTS = [
-    ("I love this class so much",                       "positive"),
-    ("Today was a terrible day",                        "negative"),
-    ("Feeling tired but kind of hopeful",               "mixed"),
-    ("This is fine",                                    "neutral"),
-    ("So excited for the weekend",                      "positive"),
-    ("I am not happy about this",                       "negative"),
-    ("Lowkey stressed but kind of proud of myself",     "mixed"),
-    ("This is so boring 😒",                            "negative"),
-    ("I can't believe how much I hate this",            "negative"),
-    ("I absolutely love getting stuck in traffic 😂",   "positive"),
+    ("I love this class so much",                       MoodLabel.POSITIVE),
+    ("Today was a terrible day",                        MoodLabel.NEGATIVE),
+    ("Feeling tired but kind of hopeful",               MoodLabel.MIXED),
+    ("This is fine",                                    MoodLabel.NEUTRAL),
+    ("So excited for the weekend",                      MoodLabel.POSITIVE),
+    ("I am not happy about this",                       MoodLabel.NEGATIVE),
+    ("Lowkey stressed but kind of proud of myself",     MoodLabel.MIXED),
+    ("This is so boring 😒",                            MoodLabel.NEGATIVE),
+    ("I can't believe how much I hate this",            MoodLabel.NEGATIVE),
+    ("I absolutely love getting stuck in traffic 😂",   MoodLabel.POSITIVE),
 ]
 
 # TODO: Add 5-10 more posts and labels.
 #
 # Requirements:
-#   - Each entry must be a (post, true_label) tuple.
+#   - Each entry must be a (post, MoodLabel) tuple.
 #   - Include a variety of language styles, such as:
 #       * Slang ("lowkey", "highkey", "no cap")
 #       * Emojis (":)", ":(", "🥲", "😂", "💀")
@@ -78,4 +85,4 @@ LABELED_POSTS = [
 #
 # Example of how you might extend the list:
 #
-# LABELED_POSTS.append(("Lowkey stressed but kind of proud of myself", "mixed"))
+# LABELED_POSTS.append(("Lowkey stressed but kind of proud of myself", MoodLabel.MIXED))

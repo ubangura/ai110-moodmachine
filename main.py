@@ -5,10 +5,10 @@ Entry point for the Mood Machine rule based mood analyzer.
 from typing import List
 
 from mood_analyzer import MoodAnalyzer
-from dataset import LABELED_POSTS
+from dataset import LABELED_POSTS, MoodLabel
 
 
-def evaluate_rule_based(posts: List[str], labels: List[str]) -> float:
+def evaluate_rule_based(posts: List[str], labels: List[MoodLabel]) -> float:
     """
     Evaluate the rule based MoodAnalyzer on a labeled dataset.
 
