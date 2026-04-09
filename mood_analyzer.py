@@ -1,4 +1,3 @@
-# mood_analyzer.py
 """
 Rule based mood analyzer for short text snippets.
 
@@ -12,7 +11,14 @@ This class starts with very simple logic:
 from typing import List, Dict, Tuple, Optional
 import string
 
-from dataset import POSITIVE_WORDS, NEGATIVE_WORDS, MoodLabel
+from dataset import (
+    WORD_WEIGHTS,
+    EMOJI_MAP,
+    NEGATION_WORDS,
+    AMPLIFIER_WORDS,
+    PUNCTUATION_TOKENS,
+    MoodLabel,
+)
 
 
 class MoodAnalyzer:
@@ -22,16 +28,9 @@ class MoodAnalyzer:
 
     def __init__(
         self,
-        positive_words: Optional[List[str]] = None,
-        negative_words: Optional[List[str]] = None,
+        word_weights: Optional[Dict[str, int]] = None,
     ) -> None:
-        # Use the default lists from dataset.py if none are provided.
-        positive_words = positive_words if positive_words is not None else POSITIVE_WORDS
-        negative_words = negative_words if negative_words is not None else NEGATIVE_WORDS
-
-        # Store as sets for faster lookup.
-        self.positive_words = set(w.lower() for w in positive_words)
-        self.negative_words = set(w.lower() for w in negative_words)
+        self.word_weights = word_weights or WORD_WEIGHTS
 
     # ---------------------------------------------------------------------
     # Preprocessing
@@ -40,27 +39,30 @@ class MoodAnalyzer:
     def preprocess(self, text: str) -> List[str]:
         """
         Convert raw text into a list of tokens the model can work with.
-
-        TODO: Improve this method.
-
-        Right now, it does the minimum:
-          - Strips leading and trailing whitespace
-          - Converts everything to lowercase
-          - Splits on spaces
-
-        Ideas to improve:
-          - Remove punctuation
-          - Handle simple emojis separately (":)", ":-(", "🥲", "😂")
-          - Normalize repeated characters ("soooo" -> "soo")
         """
+
         cleaned = text.strip().lower()
-        tokens = cleaned.split()
+
+        expanded = ""
+        for char in cleaned:
+            if char in EMOJI_MAP:
+                expanded += f" {EMOJI_MAP[char]} "
+            elif char in PUNCTUATION_TOKENS:
+                expanded += f" {char} "
+            else:
+                expanded += char
+
+        tokens = []
+
+        for token in expanded.split():
+            if token in PUNCTUATION_TOKENS:
+                tokens.append(token)
+            else:
+                stripped = "".join(c for c in token if c not in string.punctuation)
+                if stripped:
+                    tokens.append(stripped)
+
         print(f"Preprocessed '{text}' to {tokens}")
-
-        # TODO: Implement improvements here.
-
-        tokens = [''.join(c for c in token if c not in string.punctuation) for token in tokens]
-
         return tokens
 
     # ---------------------------------------------------------------------
