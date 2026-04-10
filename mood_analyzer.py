@@ -72,26 +72,30 @@ class MoodAnalyzer:
     def score_text(self, text: str) -> int:
         """
         Compute a numeric "mood score" for the given text.
-
-        Positive words increase the score.
-        Negative words decrease the score.
-
-        TODO: You must choose AT LEAST ONE modeling improvement to implement.
-        For example:
-          - Handle simple negation such as "not happy" or "not bad"
-          - Count how many times each word appears instead of just presence
-          - Give some words higher weights than others (for example "hate" < "annoyed")
-          - Treat emojis or slang (":)", "lol", "💀") as strong signals
         """
-        # TODO: Implement this method.
-        #   1. Call self.preprocess(text) to get tokens.
-        #   2. Loop over the tokens.
-        #   3. Increase the score for positive words, decrease for negative words.
-        #   4. Return the total score.
-        #
-        # Hint: if you implement negation, you may want to look at pairs of tokens,
-        # like ("not", "happy") or ("never", "fun").
-        pass
+        score = 0
+        negate_next, amplify_next = False, False
+
+        for token in self.preprocess(text):
+            if token in NEGATION_WORDS:
+                negate_next = True
+                continue
+            if token in AMPLIFIER_WORDS:
+                amplify_next = True
+                continue
+
+            token_score = self.word_weights.get(token, 0)
+            if token_score:
+                if amplify_next:
+                    token_score *= 2
+                if negate_next:
+                    token_score = -token_score
+                score += token_score
+
+            negate_next = False
+            amplify_next = False
+
+        return score
 
     # ---------------------------------------------------------------------
     # Label prediction
