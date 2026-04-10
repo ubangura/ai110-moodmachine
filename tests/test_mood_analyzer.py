@@ -1,10 +1,16 @@
 import pytest
 from mood_analyzer import MoodAnalyzer
+from dataset import MoodLabel
 
 
 @pytest.fixture
 def analyzer():
     return MoodAnalyzer()
+
+
+# ---------------------------------------------------------------------
+# preprocess
+# ---------------------------------------------------------------------
 
 
 def test_returns_lowercase_tokens_when_simple_sentence(analyzer):
@@ -90,3 +96,20 @@ def test_returns_zero_when_no_sentiment_words(analyzer):
 
 def test_returns_zero_when_only_modifiers(analyzer):
     assert analyzer.score_text("not very") == 0
+
+
+# ---------------------------------------------------------------------
+# predict_label
+# ---------------------------------------------------------------------
+
+
+def test_returns_positive_label_when_score_above_zero(analyzer):
+    assert analyzer.predict_label("happy") == MoodLabel.POSITIVE
+
+
+def test_returns_negative_label_when_score_below_zero(analyzer):
+    assert analyzer.predict_label("sad") == MoodLabel.NEGATIVE
+
+
+def test_returns_neutral_label_when_score_is_zero(analyzer):
+    assert analyzer.predict_label("the quick brown fox") == MoodLabel.NEUTRAL
